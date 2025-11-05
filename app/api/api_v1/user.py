@@ -5,6 +5,7 @@ from fastapi import (
     HTTPException,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
+from api.api_v1.utils.send_welcome_email import send_welcome_email
 from core.models import db_helper
 from core.schemas.user import User, UserRead
 from .crud import user as user_crud
@@ -24,9 +25,12 @@ async def get_user(
     return user
 
 
-@router.post("/", response_model=UserRead)
+@router.post("/")
 async def create_user(
     session: Annotated[AsyncSession, Depends(db_helper.get_session)],
     user: User,
 ):
-    return await user_crud.create_user(session, user.username)
+    user = await user_crud.create_user(session, user.username, user.email)
+
+    await send_welcome_email(user)
+    return user

@@ -3,12 +3,12 @@ from sqlalchemy import select
 from core.models import User
 
 
-async def create_user(session: AsyncSession, username: str) -> User | None:
+async def create_user(session: AsyncSession, username: str, email: str) -> User | None:
     user_exist = await get_user(session, username)
     if user_exist:
         return user_exist
 
-    user = User(username=username)
+    user = User(username=username, email=email)
     session.add(user)
     await session.commit()
     return user
