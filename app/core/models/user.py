@@ -4,4 +4,5 @@ from .base import Base
 
 
 class User(IdIntMixin, Base):
-    username: Mapped[str] = mapped_column(unique=True)
+    username: Mapped[str]
+    email: Mapped[str] = mapped_column(unique=True)
