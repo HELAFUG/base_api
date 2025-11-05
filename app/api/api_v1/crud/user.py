@@ -20,7 +20,7 @@ async def get_user(session: AsyncSession, username: str) -> User | None:
     return res.scalars().first()
 
 
-async def get_user_dy_id(session: AsyncSession, user_id: int) -> User | None:
+async def get_user_by_id(session: AsyncSession, user_id: int) -> User | None:
     stmt = select(User).where(User.id == user_id)
     res = await session.execute(stmt)
     return res.scalars().first()
