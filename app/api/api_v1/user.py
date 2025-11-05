@@ -34,3 +34,12 @@ async def create_user(
 
     await send_welcome_email(user)
     return user
+
+
+@router.get("/all")
+async def get_all_users(
+    session: Annotated[AsyncSession, Depends(db_helper.get_session)], username: str
+):
+    if username != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden")
+    return await user_crud.get_all_users(session)

@@ -18,3 +18,15 @@ async def get_user(session: AsyncSession, username: str) -> User | None:
     stmt = select(User).where(User.username == username)
     res = await session.execute(stmt)
     return res.scalars().first()
+
+
+async def get_user_dy_id(session: AsyncSession, user_id: int) -> User | None:
+    stmt = select(User).where(User.id == user_id)
+    res = await session.execute(stmt)
+    return res.scalars().first()
+
+
+async def get_all_users(session: AsyncSession) -> list[User]:
+    stmt = select(User)
+    res = await session.execute(stmt)
+    return res.scalars().all()
